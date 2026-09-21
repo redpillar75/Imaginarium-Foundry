@@ -21,6 +21,11 @@ def fetch_transcript(url: str) -> dict:
     if not video_id or not re.fullmatch(r"[A-Za-z0-9_-]{6,}", video_id):
         raise ValueError("Could not extract a valid YouTube video ID.")
 
-    transcript = YouTubeTranscriptApi.get_transcript(video_id, languages=["en"])
-    text = " ".join(item["text"].strip() for item in transcript if item.get("text"))
-    return {"video_id": video_id, "text": text, "segments": transcript}
+    # youtube-transcript-api v1.x uses an instance method and returns
+    # FetchedTranscriptSnippet objects. Convert them to plain dictionaries
+    # so they can be serialized safely in the API response.
+    api = YouTubeTranscriptApi()
+    fetched = api.fetch(video_id, languages=["en"])
+    segments = fetched.to_raw_data()
+    text = " ".join(item["text"].strip() for item in segments if item.get("text"))
+    return {"video_id": video_id, "text": text, "segments": segments}
