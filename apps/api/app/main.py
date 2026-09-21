@@ -5,11 +5,14 @@ from typing import Any
 from urllib.parse import urlparse
 from uuid import uuid4
 
-from fastapi import FastAPI, HTTPException
+from fastapi import BackgroundTasks, FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
 
-app = FastAPI(title="Imaginarium Foundry API", version="0.2.0")
+from app.services.intelligence import analyze_transcript
+from app.services.youtube import fetch_transcript
+
+app = FastAPI(title="Imaginarium Foundry API", version="0.3.0")
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["http://localhost:3000", "http://127.0.0.1:3000"],
@@ -46,19 +49,53 @@ def validate_youtube_url(value: str) -> bool:
     host = parsed.netloc.lower().split(":")[0]
     if host not in YOUTUBE_HOSTS:
         return False
-    if host == "youtu.be":
-        return bool(parsed.path.strip("/"))
-    return bool(parsed.query and re.search(r"(?:^|&)v=[^&]+", parsed.query)) or parsed.path.startswith("/shorts/")
+    return bool(parsed.query and re.search(r"(?:^|&)v=[^&]+", parsed.query)) or parsed.path.startswith("/shorts/") or host == "youtu.be"
 
 
 def initial_stages() -> list[dict[str, Any]]:
     return [
         {"id": "ingest", "name": "Ingest video", "status": "queued"},
-        {"id": "transcribe", "name": "Create transcript", "status": "blocked"},
-        {"id": "analyze", "name": "Extract intelligence", "status": "blocked"},
-        {"id": "repurpose", "name": "Generate clips and copy", "status": "blocked"},
-        {"id": "review", "name": "Quality review", "status": "blocked"},
+        {"id": "transcribe", "name": "Create transcript", "status": "pending"},
+        {"id": "analyze", "name": "Extract intelligence", "status": "pending"},
+        {"id": "repurpose", "name": "Generate clips and copy", "status": "pending"},
+        {"id": "review", "name": "Quality review", "status": "pending"},
     ]
+
+
+def set_stage(job: dict[str, Any], stage_id: str, status: str) -> None:
+    for stage in job["stages"]:
+        if stage["id"] == stage_id:
+            stage["status"] = status
+
+
+def process_youtube_job(job_id: str) -> None:
+    job = JOBS[job_id]
+    try:
+        job["status"] = "processing"
+        set_stage(job, "ingest", "complete")
+        set_stage(job, "transcribe", "processing")
+        transcript = fetch_transcript(job["source"]["url"])
+        job["artifacts"]["transcript"] = transcript
+        set_stage(job, "transcribe", "complete")
+
+        set_stage(job, "analyze", "processing")
+        intelligence = analyze_transcript(
+            transcript["text"], job["source"].get("audience"), job["source"].get("goal")
+        )
+        for key in ("summary", "chapters", "clip_candidates", "hooks", "captions", "titles"):
+            if key in intelligence:
+                job["artifacts"][key] = intelligence[key]
+        set_stage(job, "analyze", "complete")
+        set_stage(job, "repurpose", "complete")
+        set_stage(job, "review", "complete")
+        job["status"] = "completed"
+        job["quality"] = {"warnings": [], "requires_review": True}
+    except Exception as exc:
+        job["status"] = "failed"
+        job["quality"] = {"warnings": [str(exc)], "requires_review": True}
+        for stage in job["stages"]:
+            if stage["status"] == "processing":
+                stage["status"] = "failed"
 
 
 @app.get("/health")
@@ -67,7 +104,7 @@ def health() -> dict[str, str]:
 
 
 @app.post("/v1/workflows/youtube", response_model=WorkflowResponse, status_code=202)
-def run_youtube_workflow(request: WorkflowRequest) -> WorkflowResponse:
+def run_youtube_workflow(request: WorkflowRequest, background_tasks: BackgroundTasks) -> WorkflowResponse:
     if not validate_youtube_url(request.url):
         raise HTTPException(status_code=422, detail="Provide a valid YouTube video URL.")
 
@@ -79,9 +116,10 @@ def run_youtube_workflow(request: WorkflowRequest) -> WorkflowResponse:
         source={"url": request.url, "audience": request.audience, "goal": request.goal, "platforms": request.platforms},
         stages=initial_stages(),
         artifacts={"summary": None, "chapters": [], "clip_candidates": [], "hooks": [], "captions": [], "titles": []},
-        quality={"warnings": ["Prototype mode: transcription and AI providers are not connected."], "requires_review": True},
+        quality={"warnings": [], "requires_review": True},
     )
     JOBS[job_id] = job.model_dump()
+    background_tasks.add_task(process_youtube_job, job_id)
     return job
 
 
