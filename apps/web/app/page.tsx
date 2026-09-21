@@ -1,14 +1,16 @@
 "use client";
 
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000";
 
+type Stage = { name: string; status: string };
 type WorkflowResult = {
   job_id: string;
   status: string;
   workflow: string;
-  stages: { name: string; status: string }[];
+  stages: Stage[];
+  artifacts: { summary?: string | null; clip_candidates?: unknown[]; titles?: unknown[]; captions?: unknown[] };
   quality: { warnings: string[]; requires_review: boolean };
 };
 
@@ -19,6 +21,15 @@ export default function Home() {
   const [result, setResult] = useState<WorkflowResult | null>(null);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if (!result || ["completed", "failed"].includes(result.status)) return;
+    const timer = window.setInterval(async () => {
+      const response = await fetch(`${API_URL}/v1/workflows/${result.job_id}`);
+      if (response.ok) setResult(await response.json());
+    }, 2500);
+    return () => window.clearInterval(timer);
+  }, [result]);
 
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -46,7 +57,7 @@ export default function Home() {
       <section className="hero">
         <p className="eyebrow">IMAGINARIUM FOUNDRY / COMMAND CENTER</p>
         <h1>Turn one video into a content intelligence system.</h1>
-        <p className="lede">Submit a YouTube video to begin transcription, insight extraction, short-form planning, captions, and distribution preparation.</p>
+        <p className="lede">Submit a YouTube video to retrieve its transcript, extract insights, and generate short-form content opportunities.</p>
       </section>
       <form className="card" onSubmit={submit}>
         <label htmlFor="url">YouTube URL</label>
@@ -60,12 +71,15 @@ export default function Home() {
       </form>
       {result && (
         <section className="card results">
-          <p className="eyebrow">WORKFLOW CREATED</p>
+          <p className="eyebrow">WORKFLOW {result.status.toUpperCase()}</p>
           <h2>{result.workflow}</h2>
           <p>Status: <strong>{result.status}</strong></p>
           <p>Job ID: <code>{result.job_id}</code></p>
           <h3>Pipeline</h3>
           <ul>{result.stages.map((stage) => <li key={stage.name}>{stage.name}: {stage.status}</li>)}</ul>
+          {result.artifacts.summary && <><h3>Summary</h3><p>{result.artifacts.summary}</p></>}
+          {result.artifacts.clip_candidates?.length ? <p>Clip candidates: {result.artifacts.clip_candidates.length}</p> : null}
+          {result.artifacts.titles?.length ? <p>Suggested titles: {result.artifacts.titles.length}</p> : null}
           {result.quality.warnings.map((warning) => <p className="status" key={warning}>{warning}</p>)}
         </section>
       )}
