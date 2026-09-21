@@ -1,0 +1,220 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ---------------------------------------------------------------------------
+// Auth
+// ---------------------------------------------------------------------------
+
+enum UserRole {
+  ADMIN // full access, including managing users
+  REVIEWER // can approve/reject content ideas
+  CONTRIBUTOR // can submit saved content for ingestion
+}
+
+model User {
+  id           String   @id @default(uuid())
+  email        String   @unique
+  passwordHash String
+  role         UserRole @default(CONTRIBUTOR)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  submittedSources  SourceRecord[]      @relation("SourceSubmittedBy")
+  approvalDecisions ApprovalDecision[]  @relation("ApprovalDecidedBy")
+  auditLogs         AuditLog[]          @relation("AuditActor")
+
+  @@map("users")
+}
+
+// ---------------------------------------------------------------------------
+// Ingestion / source records
+// ---------------------------------------------------------------------------
+
+enum SourceStatus {
+  PENDING // stored, not yet processed by the analysis pipeline
+  PROCESSING
+  ANALYZED // pipeline completed, idea ready for review
+  FAILED // pipeline exhausted retries
+}
+
+model SourceRecord {
+  id             String       @id @default(uuid())
+  // Raw URL as submitted by the user.
+  sourceUrl      String
+  // Canonical, deduplication-safe form of the URL (lowercased host,
+  // stripped query/tracking params, trailing slash normalized).
+  normalizedUrl  String       @unique
+  // Instagram shortcode extracted from the URL, when identifiable.
+  shortcode      String?
+  // Which ingestion adapter produced this record (see src/ingestion).
+  ingestionSource String      @default("html-meta")
+  caption        String?
+  authorHandle   String?
+  mediaType      String?
+  metadata       Json         @default("{}")
+  status         SourceStatus @default(PENDING)
+
+  submittedById String
+  submittedBy   User   @relation("SourceSubmittedBy", fields: [submittedById], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  processingJobs ProcessingJob[]
+  contentIdea    ContentIdea?
+
+  @@index([status])
+  @@map("source_records")
+}
+
+// ---------------------------------------------------------------------------
+// Idempotent job processing / retries
+// ---------------------------------------------------------------------------
+
+enum JobStatus {
+  PENDING
+  IN_PROGRESS
+  SUCCEEDED
+  FAILED
+}
+
+enum JobType {
+  ANALYSIS_PIPELINE
+}
+
+model ProcessingJob {
+  id             String    @id @default(uuid())
+  // Deterministic key derived from (jobType, sourceRecordId) so retried or
+  // re-submitted work never double-processes the same source.
+  idempotencyKey String    @unique
+  jobType        JobType
+  status         JobStatus @default(PENDING)
+  attempts       Int       @default(0)
+  maxAttempts    Int       @default(3)
+  lastError      String?
+  scheduledAt    DateTime  @default(now())
+  startedAt      DateTime?
+  completedAt    DateTime?
+
+  sourceRecordId String
+  sourceRecord   SourceRecord @relation(fields: [sourceRecordId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([status])
+  @@map("processing_jobs")
+}
+
+// ---------------------------------------------------------------------------
+// Content ideas produced by the agent pipeline
+// ---------------------------------------------------------------------------
+
+enum ApprovalStatus {
+  PENDING_REVIEW
+  APPROVED
+  REJECTED
+}
+
+model ContentIdea {
+  id       String @id @default(uuid())
+
+  sourceRecordId String       @unique
+  sourceRecord   SourceRecord @relation(fields: [sourceRecordId], references: [id])
+
+  // --- THOTH: research / source analysis ---
+  summary       String
+  researchNotes Json   @default("{}")
+
+  // --- ANANSI: opportunity identification ---
+  contentPillar String
+  audienceAngle String
+  hookOptions   Json   @default("[]") // string[3]
+
+  // --- PRODUCER: script + production plan ---
+  shortFormScript  String
+  suggestedPlatform String
+  productionNotes   Json   @default("{}")
+
+  // --- LEDGER: performance / monetization metadata ---
+  monetizationTags Json @default("[]")
+  performanceNotes Json @default("{}")
+
+  approvalStatus ApprovalStatus @default(PENDING_REVIEW)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  approvalDecisions ApprovalDecision[]
+  productionTask    ProductionTask?
+
+  @@map("content_ideas")
+}
+
+model ApprovalDecision {
+  id       String         @id @default(uuid())
+  status   ApprovalStatus
+  comment  String?
+
+  contentIdeaId String
+  contentIdea   ContentIdea @relation(fields: [contentIdeaId], references: [id])
+
+  decidedById String
+  decidedBy   User   @relation("ApprovalDecidedBy", fields: [decidedById], references: [id])
+
+  createdAt DateTime @default(now())
+
+  @@index([contentIdeaId])
+  @@map("approval_decisions")
+}
+
+// ---------------------------------------------------------------------------
+// Production tasks (created only after human approval)
+// ---------------------------------------------------------------------------
+
+enum ProductionTaskStatus {
+  QUEUED
+  IN_PROGRESS
+  DONE
+}
+
+model ProductionTask {
+  id     String               @id @default(uuid())
+  title  String
+  status ProductionTaskStatus @default(QUEUED)
+
+  contentIdeaId String      @unique
+  contentIdea   ContentIdea @relation(fields: [contentIdeaId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("production_tasks")
+}
+
+// ---------------------------------------------------------------------------
+// Audit log
+// ---------------------------------------------------------------------------
+
+model AuditLog {
+  id         String   @id @default(uuid())
+  action     String
+  entityType String
+  entityId   String
+  metadata   Json     @default("{}")
+
+  actorId String?
+  actor   User?   @relation("AuditActor", fields: [actorId], references: [id])
+
+  createdAt DateTime @default(now())
+
+  @@index([entityType, entityId])
+  @@index([createdAt])
+  @@map("audit_logs")
+}
