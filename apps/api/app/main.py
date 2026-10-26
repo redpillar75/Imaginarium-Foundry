@@ -57,7 +57,7 @@ def initial_stages() -> list[dict[str, Any]]:
         {"id": "ingest", "name": "Ingest video", "status": "queued"},
         {"id": "transcribe", "name": "Create transcript", "status": "pending"},
         {"id": "analyze", "name": "Extract intelligence", "status": "pending"},
-        {"id": "repurpose", "name": "Generate clips and copy", "status": "pending"},
+        {"id": "repurpose", "name": "Generate clip ideas and copy", "status": "pending"},
         {"id": "review", "name": "Quality review", "status": "pending"},
     ]
 
@@ -87,7 +87,7 @@ def process_youtube_job(job_id: str) -> None:
                 job["artifacts"][key] = intelligence[key]
         set_stage(job, "analyze", "complete")
         set_stage(job, "repurpose", "complete")
-        set_stage(job, "review", "complete")
+        set_stage(job, "review", "pending")
         job["status"] = "completed"
         job["quality"] = {"warnings": [], "requires_review": True}
     except Exception as exc:
