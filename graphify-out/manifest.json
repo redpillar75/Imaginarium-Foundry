@@ -1,0 +1,200 @@
+{
+  "apps/api/app/__init__.py": {
+    "mtime": 1793047462.4193046,
+    "seen": 1793047923.078077,
+    "ast_hash": "fe5195e2e822df6becfef289216c6b17",
+    "semantic_hash": "fe5195e2e822df6becfef289216c6b17"
+  },
+  "apps/api/app/main.py": {
+    "mtime": 1793047462.419381,
+    "seen": 1793047923.0780857,
+    "ast_hash": "8ca147783a8c35e5c0fafe2aff81f028",
+    "semantic_hash": "8ca147783a8c35e5c0fafe2aff81f028"
+  },
+  "apps/api/app/services/__init__.py": {
+    "mtime": 1793047462.419381,
+    "seen": 1793047923.078089,
+    "ast_hash": "d41d8cd98f00b204e9800998ecf8427e",
+    "semantic_hash": "d41d8cd98f00b204e9800998ecf8427e"
+  },
+  "apps/api/app/services/intelligence.py": {
+    "mtime": 1793047462.4198995,
+    "seen": 1793047923.0780904,
+    "ast_hash": "05dd721b84f687154860158c46a3f573",
+    "semantic_hash": "05dd721b84f687154860158c46a3f573"
+  },
+  "apps/api/app/services/youtube.py": {
+    "mtime": 1793047462.4198995,
+    "seen": 1793047923.078092,
+    "ast_hash": "3065e14dd15ddcf5b66a589b44b80358",
+    "semantic_hash": "3065e14dd15ddcf5b66a589b44b80358"
+  },
+  "apps/api/tests/test_main.py": {
+    "mtime": 1793047462.4198995,
+    "seen": 1793047923.078093,
+    "ast_hash": "5853f978fc3244b1aa1770ceeaf88c5b",
+    "semantic_hash": "5853f978fc3244b1aa1770ceeaf88c5b"
+  },
+  "apps/web/app/layout.tsx": {
+    "mtime": 1793047462.4200559,
+    "seen": 1793047923.078094,
+    "ast_hash": "b3e037014730f0102e2f776753f176df",
+    "semantic_hash": "b3e037014730f0102e2f776753f176df"
+  },
+  "apps/web/app/page.tsx": {
+    "mtime": 1793047462.4200559,
+    "seen": 1793047923.0780954,
+    "ast_hash": "d33bd4de9a81c835a3609c12c50ec0fb",
+    "semantic_hash": "d33bd4de9a81c835a3609c12c50ec0fb"
+  },
+  "apps/web/package.json": {
+    "mtime": 1793047462.4200559,
+    "seen": 1793047923.0780966,
+    "ast_hash": "3657962f1525d7b32eb08e468f008eff",
+    "semantic_hash": "3657962f1525d7b32eb08e468f008eff"
+  },
+  "apps/web/tsconfig.json": {
+    "mtime": 1793047462.4200559,
+    "seen": 1793047923.0780976,
+    "ast_hash": "96ae89af852811d3fe9207a36f31c8e5",
+    "semantic_hash": "96ae89af852811d3fe9207a36f31c8e5"
+  },
+  ".claude/skills/competitor-intel/SKILL.md": {
+    "mtime": 1793047462.4176903,
+    "seen": 1793047923.0780988,
+    "ast_hash": "38b45ae806a6941fddf08ff0071edd2b",
+    "semantic_hash": "38b45ae806a6941fddf08ff0071edd2b"
+  },
+  ".claude/skills/prd-generator/SKILL.md": {
+    "mtime": 1793047462.4176903,
+    "seen": 1793047923.0781,
+    "ast_hash": "4ee321561bc506b475ec2b4e9d8992d2",
+    "semantic_hash": "4ee321561bc506b475ec2b4e9d8992d2"
+  },
+  ".claude/skills/prd-generator/references/prd_template.md": {
+    "mtime": 1793047462.4183688,
+    "seen": 1793047923.078101,
+    "ast_hash": "ff3537fa6c88976860da8c215dc008f3",
+    "semantic_hash": "ff3537fa6c88976860da8c215dc008f3"
+  },
+  ".claude/skills/product-hunt-launch-plan/SKILL.md": {
+    "mtime": 1793047462.4183688,
+    "seen": 1793047923.0781019,
+    "ast_hash": "df3f1c900b249d638a93ada34ce32cd2",
+    "semantic_hash": "df3f1c900b249d638a93ada34ce32cd2"
+  },
+  ".claude/skills/product-hunt-launch-plan/references/ultimate_product_hunt_launch_guide.md": {
+    "mtime": 1793047462.418551,
+    "seen": 1793047923.078103,
+    "ast_hash": "2b46b1bffba251531d6e3bb0be9cbe55",
+    "semantic_hash": "2b46b1bffba251531d6e3bb0be9cbe55"
+  },
+  ".claude/skills/sop-creator/SKILL.md": {
+    "mtime": 1793047462.418551,
+    "seen": 1793047923.078104,
+    "ast_hash": "fb1ed13dd34a2c6a4986eb0682f28c49",
+    "semantic_hash": "fb1ed13dd34a2c6a4986eb0682f28c49"
+  },
+  ".claude/skills/transcript/SKILL.md": {
+    "mtime": 1793047462.418551,
+    "seen": 1793047923.078105,
+    "ast_hash": "53e0417daa7f110e386b92e6af245fc9",
+    "semantic_hash": "53e0417daa7f110e386b92e6af245fc9"
+  },
+  ".claude/skills/transcript/references/curl-examples.md": {
+    "mtime": 1793047462.4188797,
+    "seen": 1793047923.078106,
+    "ast_hash": "07cbd53272e8299d1dbee6f17ce6bf39",
+    "semantic_hash": "07cbd53272e8299d1dbee6f17ce6bf39"
+  },
+  ".claude/skills/youtube-search/SKILL.md": {
+    "mtime": 1793047462.4188797,
+    "seen": 1793047923.078107,
+    "ast_hash": "b4dc4db23db06644db4258891c24d647",
+    "semantic_hash": "b4dc4db23db06644db4258891c24d647"
+  },
+  ".claude/skills/youtube-search/references/curl-examples.md": {
+    "mtime": 1793047462.4190648,
+    "seen": 1793047923.078108,
+    "ast_hash": "a2adf382225d3021c7348521d536370e",
+    "semantic_hash": "a2adf382225d3021c7348521d536370e"
+  },
+  "README.md": {
+    "mtime": 1793047462.4190648,
+    "seen": 1793047923.0781093,
+    "ast_hash": "07fb6c69c2e3ad074131c7a3b2d3352c",
+    "semantic_hash": "07fb6c69c2e3ad074131c7a3b2d3352c"
+  },
+  "agents/README.md": {
+    "mtime": 1793047462.4190648,
+    "seen": 1793047923.0781102,
+    "ast_hash": "0fe0e15a23ae58c793793118f617eefe",
+    "semantic_hash": "0fe0e15a23ae58c793793118f617eefe"
+  },
+  "apps/api/README.md": {
+    "mtime": 1793047462.4193046,
+    "seen": 1793047923.0781116,
+    "ast_hash": "a0a34afcb6f05f433a07135f88264d29",
+    "semantic_hash": "a0a34afcb6f05f433a07135f88264d29"
+  },
+  "apps/api/requirements.txt": {
+    "mtime": 1793047462.4198995,
+    "seen": 1793047923.0781128,
+    "ast_hash": "f545f5d815eb590b329323f2040056bd",
+    "semantic_hash": "f545f5d815eb590b329323f2040056bd"
+  },
+  "apps/web/README.md": {
+    "mtime": 1793047462.4200156,
+    "seen": 1793047923.0781138,
+    "ast_hash": "f3940b7809027201633d5ca6e1ba3ebc",
+    "semantic_hash": "f3940b7809027201633d5ca6e1ba3ebc"
+  },
+  "docs/architecture/overview.md": {
+    "mtime": 1793047462.4202352,
+    "seen": 1793047923.0781145,
+    "ast_hash": "8cc8e4e52a4a32cea79959cce5290810",
+    "semantic_hash": "8cc8e4e52a4a32cea79959cce5290810"
+  },
+  "docs/architecture/stack-decision.md": {
+    "mtime": 1793047462.4202993,
+    "seen": 1793047923.0781157,
+    "ast_hash": "5b32447cd4b8559137a870d9393ed115",
+    "semantic_hash": "5b32447cd4b8559137a870d9393ed115"
+  },
+  "docs/product/mvp-spec.md": {
+    "mtime": 1793047462.4202993,
+    "seen": 1793047923.0781164,
+    "ast_hash": "47e8e3e5bd6c3b7a1e6e30cf079a41e1",
+    "semantic_hash": "47e8e3e5bd6c3b7a1e6e30cf079a41e1"
+  },
+  "prd_outputs/FACTS Network/facts_network_PRD.md": {
+    "mtime": 1793047462.420456,
+    "seen": 1793047923.0781174,
+    "ast_hash": "c34eb49c0caffcfa4651ccb7091269f5",
+    "semantic_hash": "c34eb49c0caffcfa4651ccb7091269f5"
+  },
+  "prd_outputs/Ledge Identity/ledge_identity_PRD.md": {
+    "mtime": 1793047462.4211237,
+    "seen": 1793047923.0781186,
+    "ast_hash": "a90dc7648b54f7ffbebeb6aa0bd99958",
+    "semantic_hash": "a90dc7648b54f7ffbebeb6aa0bd99958"
+  },
+  "workflows/youtube-content-intelligence.md": {
+    "mtime": 1793047462.4264064,
+    "seen": 1793047923.0781198,
+    "ast_hash": "65aaccc10cd1b6cb91737f6badcf1447",
+    "semantic_hash": "65aaccc10cd1b6cb91737f6badcf1447"
+  },
+  "prd_outputs/FACTS Network/facts_network_PRD.pdf": {
+    "mtime": 1793047462.4211237,
+    "seen": 1793047923.078121,
+    "ast_hash": "f9f82b54952212f757fee7163de89d4c",
+    "semantic_hash": "f9f82b54952212f757fee7163de89d4c"
+  },
+  "prd_outputs/Ledge Identity/ledge_identity_PRD.pdf": {
+    "mtime": 1793047462.4264064,
+    "seen": 1793047923.078122,
+    "ast_hash": "407a0c72c2503c2e1d0da6039541df5c",
+    "semantic_hash": "407a0c72c2503c2e1d0da6039541df5c"
+  }
+}
