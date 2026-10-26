@@ -8,6 +8,10 @@
 ![Approach](https://img.shields.io/badge/approach-AI--first-purple)
 ![License](https://img.shields.io/badge/license-TBD-lightgrey)
 
+## Run the current prototype
+
+The implemented slice is a YouTube content-intelligence prototype. Read the [demo and diligence guide](docs/DEMO-AND-DILIGENCE.md) for setup, verified scope, limitations, and commercial proof still needed. The broader ecosystem below is a vision, not a statement that all modules are implemented.
+
 ## 📖 Overview
 
 **Imaginarium Foundry** is an AI-first creative and product-development ecosystem for creators, entrepreneurs, developers, educators, and innovators.
