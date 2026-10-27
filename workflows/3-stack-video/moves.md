@@ -17,14 +17,15 @@ The hook is your first sentence, so it has to be said word for word. Everything 
 3. Stack 1: voice memo to article.
 4. Stack 2: six agents to one insight.
 5. Stack 3: one take to a finished video.
-6. The time saved (only state a number you actually measured).
-7. "Build three this weekend."
+6. The learning loop: every note becomes a rule in notes.md, so each video needs fewer notes.
+7. The time saved (only state numbers you actually measured).
+8. "Build three this weekend."
 
 ## Beats
 
 | # | Time | Trigger word | Graphic | Motion | Assets needed |
 |---|------|--------------|---------|--------|---------------|
-| 1 | 0:00 | "I" | I DON'T EDIT VIDEOS ANYMORE: one word per hit, white, ANYMORE in accent | Each word slams in (scale 0→110→100%, 6 frames) | none |
+| 1 | 0:00 | "I" | I DON'T EDIT VIDEOS ANYMORE: one word per hit, white, ANYMORE in accent | Each word slams in (scale 0→100%, 4 frames, no bounce) | none |
 | 2 | 0:03 | "ideas" | IDEAS card, red underline draws in | Pop + underline wipe L→R | none |
 | 3 | 0:05 | "data" | DATA card stacks under IDEAS | Same | none |
 | 4 | 0:07 | "editing" | EDITING card stacks under DATA | Same | none |
@@ -41,14 +42,18 @@ The hook is your first sentence, so it has to be said word for word. Everything 
 | 15 | 0:27 | "raw" | Before/after split: raw frame vs. captioned frame | Divider wipes across | auto: frames from this edit |
 | 16 | 0:30 | "pauses" | Waveform timeline with gaps highlighted red, then collapsing | Gaps delete, timeline shortens | auto: from this take's audio |
 | 17 | 0:32 | "graphics" | Mini grid of 4 storyboard stills from this edit | Grid pops in | auto: work/storyboard/ |
-| 18 | 0:35 | "hours" | [MEASURED BEFORE] → [MEASURED AFTER] | Number counts down | your real numbers |
-| 19 | 0:39 | "chain" | Full chain: MEMO → ARTICLE → DATA → VIDEO → POST | Each icon lights in sequence | none |
-| 20 | 0:43 | "rule" | DON'T BUILD 45. BUILD 3. | 45 gets struck through in accent | none |
-| 21 | 0:45 | "weekend" | BUILD 3 THIS WEEKEND + down arrow | Arrow bounces 2x | none |
+| 18 | 0:35 | "memory" / "notes" | MEMORY | Slams in, one pulse (100→104→100%) | none |
+| 19 | 0:37 | "video one" | VIDEO #1: [REAL] NOTES | Number counts in, accent red | your real count |
+| 20 | 0:39 | "rules" | notes.md screen recording, rules appearing one by one, green check on each | Recording plays in card | `assets/screens/notes-md.mov` |
+| 21 | 0:41 | "video five" / latest | VIDEO #[N]: [REAL] NOTES + edit time [BEFORE] → [AFTER] min | Both counters run down together | your real numbers |
+| 22 | 0:43 | "chain" | MEMO → ARTICLE → DATA → VIDEO → POST | Icons light in sequence | none |
+| 23 | 0:46 | "rule" | DON'T BUILD 45. BUILD 3. | 45 gets struck through in accent | none |
+| 24 | 0:48 | "weekend" | BUILD 3 THIS WEEKEND + down arrow | Arrow slides down once | none |
 
-21 beats over about 50s is roughly 1 every 2.4s. If the take runs long, Claude adds beats (key-word callouts) to hold about 2s.
+24 beats over about 50s is roughly 1 every 2s. If the take runs long, Claude adds beats (key-word callouts) to hold about 2s.
 
 ## Rules
 - Real screens only. If an asset in the right-hand column is missing, stop and ask; don't mock it up.
-- Accent #FF3B30 only on keywords (ANYMORE, red underlines, struck 45, BUILD 3).
+- Accent #FF3B30 only on keywords and counters (ANYMORE, red underlines, counters, struck 45, BUILD 3). Green #34C759 only for checkmarks and the Boss pass glow.
+- Counters on beats 19 and 21 use real numbers from your own edits. Until you have them, cut those beats.
 - No trading numbers, tickers or returns on screen. Beat 12 shows the scoring mechanic, not a trade.
