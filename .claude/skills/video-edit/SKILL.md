@@ -27,6 +27,7 @@ my-video/
 ├── brand.md          # colors, type, placement, motion, audio
 ├── moves.md          # beat list; built from references on first run if missing
 ├── notes.md          # the user's rules from past notes; created if missing
+├── talking-points.md # optional, from /voice-to-article: hook line + quotable lines
 ├── work/             # transcript, cut list, storyboard, frames, checks
 └── out/
 ```
@@ -63,7 +64,7 @@ For each reference: extract 1 frame per second and transcribe it. List its hook 
 
 ## Step 5: Storyboard (STOP 2)
 
-Map each beat in `moves.md` to its trigger word in the cut transcript. If a trigger word wasn't said, use the closest word and say so. Aim for a new graphic every ~2s on the top half, with the face below. Render one still per beat into `work/storyboard/`.
+Map each beat in `moves.md` to its trigger word in the cut transcript. If `talking-points.md` is present, put a quotable line on screen only where it's actually said in the take. If a trigger word wasn't said, use the closest word and say so. Aim for a new graphic every ~2s on the top half, with the face below. Render one still per beat into `work/storyboard/`.
 
 **STOP: wait for the user's "yes" before any render.**
 
