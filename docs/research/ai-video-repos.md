@@ -88,6 +88,21 @@ To run most of these in a dev environment, you need:
 - Python 3.11+ or uv for audio and analysis tools
 - Optional: a GPU, Blender, and TTS or music API keys
 
+## Install test (2026-10-30)
+
+All eight repos were cloned into a cloud container (4 CPU cores, no GPU, Node 22, ffmpeg 6.1, Python 3.13, Chromium). Node dependencies were installed with `npm install --ignore-scripts` (and `bun install` for pdoom-video), after checking the manifests for install hooks.
+
+| Repo | Result |
+|---|---|
+| lemo-opuscar | Installed (Node + core Python tier). **Not rendered:** it requires ffmpeg 7+, and this machine has 6.1. |
+| mg-styles-15 | Installed (Node + audio Python deps). **Rendered a new sample film**: see [`media/samples/bauhaus-poster`](../../media/samples/bauhaus-poster/). Canvas2D renders at about 0.25 s per frame without a GPU. |
+| ClaudeAnimationBase | Installed. The demo renders with `--soft-gl`, but at up to 40 s per frame without a GPU, so a full clip takes hours. Use a GPU machine for it. |
+| pdoom-video | App dependencies installed with bun. The `analysis/` tools were skipped: they need torch and the Mac-only `mlx-whisper`, and are only for regenerating timing data. |
+| PDoomVideo | Installed. Same p5.brush renderer as ClaudeAnimationBase, so it's GPU-bound too. |
+| opus-video-prompts, awesome-claude-5-5-videos, awesome-opus5-5-videos | Cloned. These are docs and prompts, with nothing to install. |
+
+**Lesson:** on GPU-less cloud machines, 2D Canvas films (mg-styles-15 style) are practical, while p5.brush watercolour and WebGL-heavy styles are not.
+
 ## Cautions
 
 - **Review before running.** Installing a plugin or cloning a repo and letting Claude run it executes third-party code. Read the repo first, per the Foundry security principles (least privilege, human approval).
